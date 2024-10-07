@@ -1,0 +1,31 @@
+{
+  "name": "Crossword Puzzle",
+  "short_name": "Crossword",
+  "description": "A free Crossword Puzzle with many options",
+	"icons": [
+    {
+      "src": "images/cw_256x256.png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "images/cw_192x192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "images/cw_180x180.png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "images/cw_64x64.png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "images/cw_32x32.png",
+      "sizes": "32x32"
+    }
+  ],
+  "start_url": "/Crossword/index.html",
+  "theme_color": "#eeffee",
+  "background_color": "#eeffee",
+  "display": "standalone"
+}
