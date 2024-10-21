@@ -23,6 +23,7 @@
 				cache: "no-store",
 				method: 'GET',
 				headers: {
+				'cache': 'no-store',	
 				'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json'
 				}
@@ -229,7 +230,9 @@
 					puzzle.currentCell=cells[row*rows+col];
 					return;
 				}
-				if (row+1>=rows) {
+				let ndx   = (row+1)*rows+col;
+				let pCell = cells[ndx]; 
+				if (row+1>=rows || pCell.classList.contains('emptyCell')) {
 					let nextSibling = puzzle.currentClue.nextSibling;
 					if (nextSibling.nodeName!='DIV') {
 						row=0;
@@ -240,10 +243,7 @@
 					nextSibling.click();
 					return;
 				}
-				let ndx   = (row+1)*rows+col;
-				let pCell = cells[ndx];
-				if (pCell.classList.contains('emptyCell')||
-					(skip==true && pCell.querySelector('.puzChar').innerHTML!=' ')) {
+				if (skip==true && pCell.querySelector('.puzChar').innerHTML!=' ') {
 						row++;
 						moveDown();
 						return;
@@ -370,6 +370,20 @@
 				if (key=='ArrowUp'||key=='ArrowDown'||key=='ArrowLeft'||key=='ArrowRight') {
 					if (puzzle.currentFocus.classList.contains('puzClue')) return;
 					puzzle.puzCellMove(key.substr(5).toLowerCase());
+				}
+				if (key=='Tab' && event.shiftKey==false ) {
+					let npc = puzzle.currentClue.nextSibling;
+					if (npc && npc.nodeName=='DIV') {
+						puzzle.currentClue=npc;
+						puzzle.currentClue.click();
+					}
+				}
+				if (key=='Tab' && event.shiftKey==true ) {
+					let ppc = puzzle.currentClue.previousSibling;
+					if (ppc && !ppc.classList.contains('puzClueHdr')) {
+						puzzle.currentClue=ppc;
+						puzzle.currentClue.click();
+					}
 				}
 			};
 			document.addEventListener('keydown',keyDown);
@@ -534,7 +548,7 @@
 			for (let item of items) {
 				if (item) adjust += document.getElementById(item).offsetHeight+15;
 			}
-			let ch = el.parentNode.offsetHeight-adjust;
+			let ch = window.innerHeight - el.parentNode.offsetTop-adjust;
 			let cw = document.getElementById('puzzleBody').offsetWidth;
 			let puzWidth = cw<ch?cw:ch;
 			el.style.setProperty('--puzWidth',(puzWidth-10)+'px');
